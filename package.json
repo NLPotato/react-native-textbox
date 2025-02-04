@@ -1,6 +1,6 @@
 {
   "name": "react-native-textbox",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "iOS native translation module for Expo",
   "main": "build/index.js",
   "types": "build/index.d.ts",
