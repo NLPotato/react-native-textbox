@@ -3,7 +3,7 @@ import UIKit
 import ExpoModulesCore
 import NaturalLanguage
 
-public class ReactNativeTextboxModule: Module {
+public class ReactNativeTextbox: Module {
     public func definition() -> ModuleDefinition {
         Name("ReactNativeTextbox")
 
