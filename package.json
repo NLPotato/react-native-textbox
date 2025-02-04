@@ -17,7 +17,7 @@
     "expo",
     "ios",
     "translation",
-    "natural-language",
+    "natural-language"
   ],
   "repository": {
     "type": "git",
