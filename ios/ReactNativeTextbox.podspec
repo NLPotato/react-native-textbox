@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
     :tvos => '15.1'
   }
   s.swift_version  = '5.4'
-  s.source         = { git: 'https://github.com/wjlee-ling/react-native-textbox' }
+  s.source         = { git: 'https://github.com/NLPotato/react-native-textbox' }
   s.static_framework = true
 
   s.dependency 'ExpoModulesCore'
@@ -25,5 +25,5 @@ Pod::Spec.new do |s|
     'DEFINES_MODULE' => 'YES',
   }
 
-  s.source_files = "**/*.{h,m,mm,swift,hpp,cpp}"
+  s.source_files = "ios/ReactNativeTextboxModule.swift"
 end

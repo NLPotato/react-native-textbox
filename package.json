@@ -1,43 +1,35 @@
 {
   "name": "react-native-textbox",
-  "version": "0.1.0",
-  "description": "Module for utilizing IOS text features",
+  "version": "1.0.0",
+  "description": "iOS native translation module for Expo",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
     "build": "expo-module build",
     "clean": "expo-module clean",
-    "lint": "expo-module lint",
     "test": "expo-module test",
     "prepare": "expo-module prepare",
     "prepublishOnly": "expo-module prepublishOnly",
-    "expo-module": "expo-module",
-    "open:ios": "xed example/ios",
-    "open:android": "open -a \"Android Studio\" example/android"
+    "expo-module": "expo-module"
   },
   "keywords": [
     "react-native",
     "expo",
-    "react-native-textbox",
-    "ReactNativeTextbox"
+    "ios",
+    "translation",
+    "natural-language",
   ],
-  "repository": "https://github.com/wjlee-ling/react-native-textbox",
-  "bugs": {
-    "url": "https://github.com/wjlee-ling/react-native-textbox/issues"
-  },
-  "author": "wjlee <wjlee.ling@gmail.com> (https://github.com/wjlee-ling)",
-  "license": "MIT",
-  "homepage": "https://github.com/wjlee-ling/react-native-textbox#readme",
-  "dependencies": {},
-  "devDependencies": {
-    "@types/react": "~18.3.12",
-    "expo-module-scripts": "^4.0.3",
-    "expo": "~52.0.0",
-    "react-native": "0.76.0"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NLPotato/react-native-textbox.git"
   },
   "peerDependencies": {
     "expo": "*",
     "react": "*",
     "react-native": "*"
+  },
+  "devDependencies": {
+    "expo-module-scripts": "^3.0.0",
+    "expo-modules-core": "^1.0.0"
   }
 }

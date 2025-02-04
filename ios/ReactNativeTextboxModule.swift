@@ -1,48 +1,81 @@
+import Foundation
+import UIKit
 import ExpoModulesCore
+import NaturalLanguage
 
 public class ReactNativeTextboxModule: Module {
-  // Each module class must implement the definition function. The definition consists of components
-  // that describes the module's functionality and behavior.
-  // See https://docs.expo.dev/modules/module-api for more details about available components.
-  public func definition() -> ModuleDefinition {
-    // Sets the name of the module that JavaScript code will use to refer to the module. Takes a string as an argument.
-    // Can be inferred from module's class name, but it's recommended to set it explicitly for clarity.
-    // The module will be accessible from `requireNativeModule('ReactNativeTextbox')` in JavaScript.
-    Name("ReactNativeTextbox")
+    public func definition() -> ModuleDefinition {
+        Name("ReactNativeTextbox")
 
-    // Sets constant properties on the module. Can take a dictionary or a closure that returns a dictionary.
-    Constants([
-      "PI": Double.pi
-    ])
-
-    // Defines event names that the module can send to JavaScript.
-    Events("onChange")
-
-    // Defines a JavaScript synchronous function that runs the native code on the JavaScript thread.
-    Function("hello") {
-      return "Hello world! 👋"
-    }
-
-    // Defines a JavaScript function that always returns a Promise and whose native code
-    // is by default dispatched on the different thread than the JavaScript runtime runs on.
-    AsyncFunction("setValueAsync") { (value: String) in
-      // Send an event to JavaScript.
-      self.sendEvent("onChange", [
-        "value": value
-      ])
-    }
-
-    // Enables the module to be used as a native view. Definition components that are accepted as part of the
-    // view definition: Prop, Events.
-    View(ReactNativeTextboxView.self) {
-      // Defines a setter for the `url` prop.
-      Prop("url") { (view: ReactNativeTextboxView, url: URL) in
-        if view.webView.url != url {
-          view.webView.load(URLRequest(url: url))
+        // 지원 가능한 언어 목록 반환
+        Function("getAvailableLanguages") { () -> [String] in
+            return NLLanguage.allCases.map { $0.rawValue }
         }
-      }
 
-      Events("onLoad")
+        // 언어 감지
+        AsyncFunction("detectLanguage") { (options: [String: Any]) async throws -> String in
+            guard let text = options["text"] as? String else {
+                throw Exception("Missing text")
+            }
+            
+            let recognizer = NLLanguageRecognizer()
+            recognizer.processString(text)
+            guard let languageCode = recognizer.dominantLanguage?.rawValue else {
+                throw Exception("Could not detect language")
+            }
+            
+            return languageCode
+        }
+
+        // 번역 with UI feedback
+        AsyncFunction("translate") { (options: [String: Any]) async throws -> [String: Any] in
+            guard let text = options["text"] as? String,
+                  let targetLanguage = options["targetLanguage"] as? String else {
+                throw Exception("Missing arguments")
+            }
+
+            let translator = NLTranslator()
+            
+            // 진행 상태를 이벤트로 전송
+            self.sendEvent("translationProgress", ["status": "started"])
+            
+            try await translator.prepare(for: text, 
+                                      from: .detectLanguage, 
+                                      to: NLLanguage(targetLanguage))
+            
+            guard let translation = try await translator.translate(text) else {
+                throw Exception("Translation failed")
+            }
+            
+            self.sendEvent("translationProgress", ["status": "completed"])
+            
+            return [
+                "originalText": text,
+                "translatedText": translation,
+                "sourceLanguage": translator.sourceLanguage?.rawValue ?? "unknown",
+                "targetLanguage": targetLanguage
+            ]
+        }
     }
-  }
+}
+
+// Helper function for base64 decoding
+extension String {
+    func base64Decoded() -> String? {
+        guard let data = Data(base64Encoded: self) else { return nil }
+        return String(data: data, encoding: .utf8)
+    }
+}
+
+// Custom exception for better error handling
+class Exception: Error, LocalizedError {
+    let message: String
+
+    init(_ message: String) {
+        self.message = message
+    }
+
+    var errorDescription: String? {
+        return message
+    }
 }
