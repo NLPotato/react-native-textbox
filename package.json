@@ -4,6 +4,8 @@
   "description": "iOS native translation module for Expo",
   "main": "build/index.js",
   "types": "build/index.d.ts",
+  "author": "WJLee <wjlee.ling@gmail.com>",
+  "homepage": "https://github.com/NLPotato/react-native-textbox",
   "scripts": {
     "build": "expo-module build",
     "clean": "expo-module clean",
