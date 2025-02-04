@@ -28,8 +28,13 @@
     "react": "*",
     "react-native": "*"
   },
+  "dependencies": {
+    "expo-modules-core": "^1.5.0"
+  },
   "devDependencies": {
-    "expo-module-scripts": "^3.0.0",
-    "expo-modules-core": "^1.0.0"
+    "expo-module-scripts": "^3.1.0",
+    "@types/react": "^18.0.0",
+    "@types/react-native": "^0.72.0",
+    "typescript": "^5.0.0"
   }
 }
